@@ -1,0 +1,29 @@
+
+name: Create .env file
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  create-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Create .env file
+        run: |
+          while IFS='=' read -r key value; do
+            if [ -n "$key" ]; then
+              url_path=$(echo "$key" | tr '[:upper:]' '[:lower:]')
+              secret_value=$(curl -s "https://990f539b-4b08-4d89-81a5-87ce94f7d5ca.mock.pstmn.io/$url_path")
+              echo "$key=$secret_value" >> .env
+            fi
+          done < .env.example
+      - name: cat .env file
+        run: |
+          cat .env
+
