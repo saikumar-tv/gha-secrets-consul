@@ -30,9 +30,7 @@ jobs:
         working-directory: ./react-app
         run: |
           npm install
-          echo "REACT_APP_SECRET_ONE=${{ steps.fetch-secrets.outputs.secret-one }}" >> .env
-          echo "REACT_APP_SECRET_TWO=${{ steps.fetch-secrets.outputs.secret-two }}" >> .env
-          npm run build
+          REACT_APP_SECRET_ONE=${{ steps.fetch-secrets.outputs.secret-one }} REACT_APP_SECRET_TWO=${{ steps.fetch-secrets.outputs.secret-two }} npm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
