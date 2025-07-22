@@ -1,0 +1,38 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Fetch Secrets
+        id: fetch-secrets
+        uses: ./.github/actions/fetch-secrets
+        with:
+          postman-mock-url: ${{ secrets.POSTMAN_MOCK_URL }}
+
+      - name: Log Secrets
+        run: |
+          echo "Secret One: ${{ steps.fetch-secrets.outputs.secret-one }}"
+          echo "Secret Two: ${{ steps.fetch-secrets.outputs.secret-two }}"
+
+      - name: Build React App
+        working-directory: ./react-app
+        run: |
+          npm install
+          echo "REACT_APP_SECRET_ONE=${{ steps.fetch-secrets.outputs.secret-one }}" >> .env
+          echo "REACT_APP_SECRET_TWO=${{ steps.fetch-secrets.outputs.secret-two }}" >> .env
+          npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./react-app/build
