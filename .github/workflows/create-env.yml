@@ -26,4 +26,5 @@ jobs:
       - name: cat .env file
         run: |
           cat .env
+          echo "Environment file created successfully."
 
