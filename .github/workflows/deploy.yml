@@ -16,21 +16,16 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Fetch Secrets
-        id: fetch-secrets
         uses: ./.github/actions/fetch-secrets
         with:
-          postman-mock-url: ${{ secrets.POSTMAN_MOCK_URL }}
-
-      - name: Log Secrets
-        run: |
-          echo "Secret One: ${{ steps.fetch-secrets.outputs.secret-one }}"
-          echo "Secret Two: ${{ steps.fetch-secrets.outputs.secret-two }}"
+          postman-mock-url: https://990f539b-4b08-4d89-81a5-87ce94f7d5ca.mock.pstmn.io
+          react-app-dir: ./react-app
 
       - name: Build React App
         working-directory: ./react-app
         run: |
           npm install
-          REACT_APP_SECRET_ONE=${{ steps.fetch-secrets.outputs.secret-one }} REACT_APP_SECRET_TWO=${{ steps.fetch-secrets.outputs.secret-two }} npm run build
+          npm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

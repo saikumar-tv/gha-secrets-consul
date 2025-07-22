@@ -10,10 +10,13 @@ function App() {
           Secrets from Postman will be displayed below:
         </p>
         <p>
-          SECRET_ONE: {process.env.REACT_APP_SECRET_ONE}
+          DB Username: {process.env.REACT_APP_DB_USERNAME}
         </p>
         <p>
-          SECRET_TWO: {process.env.REACT_APP_SECRET_TWO}
+          DB Password: {process.env.REACT_APP_DB_PASSWORD}
+        </p>
+        <p>
+          DB Port: {process.env.REACT_APP_DB_PORT}
         </p>
       </header>
     </div>
